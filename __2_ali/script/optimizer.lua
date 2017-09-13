@@ -1,8 +1,8 @@
 -- optimizer
 
 require 'torch'
-require 'script.optim_updates'
-local opts = require 'script.opts'
+require '__2_ali.script.optim_updates'
+local opts = require '__2_ali.script.opts'
 
 
 local optimizer = {}

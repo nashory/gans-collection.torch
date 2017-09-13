@@ -1,4 +1,4 @@
--- Discriminator network structure for both unsupervised, and self-supervised BiGAN.
+-- Discriminator network structure for ALI.
 
 
 local nn = require 'nn'
@@ -24,12 +24,9 @@ function Discrim.weights_init(m)
 end
 
 -- Encode input context to noise
-function Discrim.create_model(type, mode, opt)
-	local mode = string.upper(mode)
-	assert(	type==64 or type==128 or type == 256, 
-			'erorr. type argument must \'64\' or \'128\' or \'256\'.')
-	assert(	mode == 'ALI' or mode == 'DCGAN', 
-			'erorr. type argument must \'ALI\' or \'DCGAN\'.')
+function Discrim.create_model(type, opt)
+	assert(	type==64 or type==128, 
+			'erorr. type argument must \'64\' or \'128\'.')
 
 	local nc = opt.nc
 	local nz = opt.nz
@@ -38,7 +35,7 @@ function Discrim.create_model(type, mode, opt)
 	local njzf = opt.njzf
 	local model = nn.Sequential()
 
-	if mode == 'ALI' and type == 128 then
+	if type == 128 then
 		-- X-Discriminator.
 		local XDIS =  nn.Sequential()
 		-- input : (nc) x 128 x 128
@@ -77,7 +74,6 @@ function Discrim.create_model(type, mode, opt)
 		XZDIS:add(SConv(2*njxf, 2*njxf, 1, 1)):add(LeakyReLU(0.2, true))
 		-- state size : (2*njxf) x 1 x 1
 		XZDIS:add(SConv(2*njxf, 1, 1, 1)):add(nn.Sigmoid()):add(nn.View(-1))
-		--XZDIS:add(SConv(2*njxf, 1, 1, 1)):add(nn.View(-1))
 		-- state size : (1)
 		
 		-- build final model
@@ -88,7 +84,7 @@ function Discrim.create_model(type, mode, opt)
 		model:add(nn.JoinTable(2))		-- state size : (2*njxf) x 1 x 1
 		model:add(XZDIS)				-- state size : 1
 
-	elseif mode == 'ALI' and type == 64 then
+	elseif type == 64 then
 		-- X-Discriminator.
 		local XDIS =  nn.Sequential()
 		-- state size : (nc) x 64 x 64
@@ -124,7 +120,6 @@ function Discrim.create_model(type, mode, opt)
 		XZDIS:add(SConv(2*njxf, 2*njxf, 1, 1)):add(LeakyReLU(0.2, true))
 		-- state size : (2*njxf) x 1 x 1
 		XZDIS:add(SConv(2*njxf, 1, 1, 1)):add(nn.Sigmoid()):add(nn.View(-1))
-		--XZDIS:add(SConv(2*njxf, 1, 1, 1)):add(nn.View(-1))
 		-- state size : (1)
 		
 		-- build final model
@@ -134,52 +129,9 @@ function Discrim.create_model(type, mode, opt)
 		model:add(XZprl)
 		model:add(nn.JoinTable(2))		-- state size : (2*njf) x 1 x 1
 		model:add(XZDIS)				-- state size : 1
-
-
-	elseif mode == 'DCGAN' and type == 64 then
-		-- state size : (ndf) x 64 x 64
-		model:add(SConv(nc, ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(LeakyReLU(0.2, true))
-		-- state size : (ndf) x 32 x 32
-		model:add(SConv(ndf, 2*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(2*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (2*ndf) x 16 x 16
-		model:add(SConv(2*ndf, 4*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(4*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (4*ndf) x 8 x 8
-		model:add(SConv(4*ndf, 8*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(8*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (8*ndf) x 4 x 4
-		model:add(SConv(8*ndf, 1, 4, 4))
-		model:add(nn.Sigmoid())
-		-- state size : (1) x 1 x 1
-
-	elseif mode == 'DCGAN' and type == 256 then
-		-- state size : (ndf) x 256 x 256
-		model:add(SConv(nc, ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(LeakyReLU(0.2, true))
-		-- state size : (ndf) x 128 x 128
-		model:add(SConv(ndf, 2*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(2*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (ndf) x 64 x 64
-		model:add(SConv(2*ndf, 2*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(2*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (ndf) x 32 x 32
-		model:add(SConv(2*ndf, 4*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(4*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (2*ndf) x 16 x 16
-		model:add(SConv(4*ndf, 4*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(4*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (4*ndf) x 8 x 8
-		model:add(SConv(4*ndf, 8*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(8*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (8*ndf) x 4 x 4
-		model:add(SConv(8*ndf, 1, 4, 4))
-		model:add(nn.Sigmoid())
-		-- state size : (1) x 1 x 1
-	end
-
-	return model
+    end
+	
+    return model
 end
 
 

@@ -7,7 +7,7 @@ require 'sys'
 require 'optim'
 require 'image'
 require 'math'
-local optimizer = require 'script.optimizer'
+local optimizer = require '__2_ali.script.optimizer'
 
 
 local ALI = torch.class('ALI')
@@ -145,7 +145,7 @@ function ALI:train(epoch, loader)
 
 			-- save model at every specified epoch.
 			local data = {dis = self.dis, gen = self.gen, enc = self.enc}
-			self:snapshot(string.format('repo/%s', self.opt.name), self.opt.name, totalIter, data)
+			self:snapshot(string.format('__2_ali/repo/%s', self.opt.name), self.opt.name, totalIter, data)
 
 			-- display server.
 			if (totalIter%self.opt.display_iter==0) and (self.opt.display) then

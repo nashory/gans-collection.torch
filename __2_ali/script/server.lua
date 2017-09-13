@@ -2,7 +2,7 @@
 -- last modified : 2017.09.01, nashory
 
 
-local opts = require 'script.opts'
+local opts = require '__2_ali.script.opts'
 local opt = opts.parse(arg)
 
 if opt.display then

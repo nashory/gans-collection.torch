@@ -2,7 +2,7 @@
     This data loader is a modified version of the one from dcgan.torch
     (see https://github.com/soumith/dcgan.torch/blob/master/data/data.lua).
     
-    Copyright (c) 2016, Deepak Pathak [See LICENSE file for details]
+    Copyright (c) 2017, Minchul Shin [See LICENSE file for details]
 ]]--
 
 local Threads = require 'threads'

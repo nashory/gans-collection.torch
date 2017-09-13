@@ -12,12 +12,22 @@ Collection of GAN models implemented in Torch7 (e.g. DCGAN, ALI, Context-encoder
 + Torch7
 + python2.7
 + cuda
++ other torch packages (display, hdf5, image ...)
 
 ## Usage
 1. download training data:
 ~~~ 
 python download.py --datasets <dataset>
 (e.g) python run.py --datasets celebA
+
+
+<train_data_root>
+                |--classA
+				        |--image1A
+						|--image2B ...
+				|--classB
+				        |--image1B
+						|--image2B ...
 ~~~
 2. run training:
 ~~~ 
@@ -38,6 +48,7 @@ will be updated soon.
 
 ## Author
 MinchulShin, [@nashory](https://github.com/nashory)
+__Any insane bug reports or questions are welcome. (min.stellastra[at]gmail.com)  :-)__
 
 
 
