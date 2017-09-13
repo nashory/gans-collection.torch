@@ -33,6 +33,11 @@ Thumbs.db
 *.swp
 *.pyc
 
+# user generaged files.
+repo/
+ttt/
+
+
 
 
 
