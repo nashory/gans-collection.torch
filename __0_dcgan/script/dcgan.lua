@@ -123,7 +123,7 @@ function DCGAN:train(epoch, loader)
 
 			-- save model at every specified epoch.
 			local data = {dis = self.dis, gen = self.gen}
-			self:snapshot(string.format('repo/%s', self.opt.name), self.opt.name, totalIter, data)
+			self:snapshot(string.format('__0_dcgan/repo/%s', self.opt.name), self.opt.name, totalIter, data)
 
 			-- display server.
 			if (totalIter%self.opt.display_iter==0) and (self.opt.display) then
