@@ -23,11 +23,11 @@ python download.py --datasets <dataset>
 
 <train_data_root>
                 |--classA
-				        |--image1A
+                        |--image1A
 						|--image2B ...
-				|--classB
-				        |--image1B
-						|--image2B ...
+                |--classB
+                        |--image1B
+                        |--image2B ...
 ~~~
 2. run training:
 ~~~ 
