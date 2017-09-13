@@ -14,22 +14,30 @@ Collection of GAN models implemented in Torch7 (e.g. DCGAN, ALI, Context-encoder
 + cuda
 
 ## Usage
-1. run training:
+1. download training data:
+~~~ 
+python download.py --datasets <dataset>
+(e.g) python run.py --datasets celebA
+~~~
+2. run training:
 ~~~ 
 python run.py --type <gan_type>
-(e.g) pyton run.py --type dcgan
+(e.g) python run.py --type dcgan
 ~~~
-2. run server (real-time visualization)
+3. run server (real-time visualization)
 ~~~
 python server.py --type <gan_type>
-(e.g) pyton server.py --type dcgan
+(e.g) python server.py --type dcgan
 ~~~
 
 ## Results
 will be updated soon.
 
+
+
+
 ## Author
-MinchulShin, @nashory
+MinchulShin, [@nashory](https://github.com/nashory)
 
 
 

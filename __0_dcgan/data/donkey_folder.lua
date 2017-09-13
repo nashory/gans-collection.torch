@@ -11,7 +11,7 @@
 ]]--
 
 require 'image'
-local opts = require 'script.opts'
+local opts = require '__0_dcgan.script.opts'
 paths.dofile('dataset.lua')
 
 -- get opt

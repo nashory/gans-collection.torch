@@ -1,8 +1,8 @@
 -- optimizer
 
 require 'torch'
-require '__0_dcgan.script.optim_updates'
-local opts = require '__0_dcgan.script.opts'
+require '__1_context-encoder.script.optim_updates'
+local opts = require '__1_context-encoder.script.opts'
 
 
 local optimizer = {}

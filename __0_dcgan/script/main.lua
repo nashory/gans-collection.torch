@@ -26,7 +26,7 @@ if opt.gpuid >= 0 then
 end
 
 -- create dataloader.
-local loader = paths.dofile('../../data/data.lua')
+local loader = paths.dofile('../data/data.lua')
 
 
 -- import trainer script.
