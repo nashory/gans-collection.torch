@@ -22,7 +22,7 @@ Collection of GAN models implemented in Torch7 (e.g. DCGAN, ALI, Context-encoder
 python download.py --datasets <dataset>
 (e.g) python run.py --datasets celebA
 
-
+---------------------------------------
 <train_data_root>
                 |--classA
                         |--image1A
@@ -30,26 +30,37 @@ python download.py --datasets <dataset>
                 |--classB
                         |--image1B
                         |--image2B ...
+---------------------------------------
 ~~~
-2. run training:
+
+2. run GANs training:
+__Note that you need to change parameter options in "script/opts.lua" for each GANs.__
 ~~~ 
 python run.py --type <gan_type>
 (e.g) python run.py --type dcgan
 ~~~
-3. run server (real-time visualization)
+
+## How to see generated images in real-time?
+step by step instruction:
 ~~~
-python server.py --type <gan_type>
-(e.g) python server.py --type dcgan
+1. set server-related options(ip, port, etc.) in "script.opts.lua"
+2. run server (python server.py --type <gan_type>)
+3. open web browser, and connect. (https://<server_ip>:<server_port>)
 ~~~
+
+you will see like this:
+![image](https://puu.sh/xyy5y/a12f6e9aa0.png)
+
+
+
 
 ## Results
 will be updated soon.
 
 
-
-
 ## Author
-MinchulShin, [@nashory](https://github.com/nashory)
+MinchulShin, [@nashory](https://github.com/nashory)  
+__Will keep updating other types of GANs.__  
 __Any insane bug reports or questions are welcome. (min.stellastra[at]gmail.com)  :-)__
 
 
