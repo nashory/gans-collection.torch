@@ -18,8 +18,6 @@ function ALI:__init(model, criterion, opt, optimstate)
 	self.criterion = criterion
 	self.optimstate = optimstate or {
 		lr = opt.lr,
-		momentum = opt.momentum,
-		weight_decay = opt.weight_decay,
 	}
 	self.opt = opt
 	self.noisetype = opt.noisetype

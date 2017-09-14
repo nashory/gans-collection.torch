@@ -34,7 +34,7 @@ require '__0_dcgan.script.dcgan'
 
 -- load players(gen, dis)
 local dcgan_models = {}
-local dcgan_dis = dis.create_model(opt.sampleSize, 'DCGAN', opt)			-- discriminator
+local dcgan_dis = dis.create_model(opt.sampleSize, opt)			-- discriminator
 local dcgan_gen = gen.create_model(opt.sampleSize, opt)						-- generator	
 dcgan_models = {dcgan_gen, dcgan_dis}
 print ('DCGAN generator : ')	

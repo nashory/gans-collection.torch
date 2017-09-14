@@ -1,4 +1,4 @@
--- Discriminator network structure for both unsupervised, and self-supervised BiGAN.
+-- Discriminator network structure
 
 
 local nn = require 'nn'
@@ -24,15 +24,13 @@ function Discrim.weights_init(m)
 end
 
 -- Encode input context to noise
-function Discrim.create_model(type, mode, opt)
-	assert(	type==64 or type==128 or type == 256, 
-			'erorr. type argument must \'64\' or \'128\' or \'256\'.')
+function Discrim.create_model(type, opt)
+	assert(	type==64 or type==128, 
+			'erorr. type argument must \'64\' or \'128\'.')
 
 	local nc = opt.nc
 	local nz = opt.nz
 	local ndf = opt.ndf
-	local njxf = opt.njxf
-	local njzf = opt.njzf
 	local model = nn.Sequential()
 
 
@@ -54,21 +52,18 @@ function Discrim.create_model(type, mode, opt)
 		model:add(nn.Sigmoid())
 		-- state size : (1) x 1 x 1
 
-	elseif type == 256 then
-		-- state size : (ndf) x 256 x 256
+    elseif type == 128 then
+		-- state size : (nc) x 128 x 128
 		model:add(SConv(nc, ndf, 4, 4, 2, 2, 1, 1):noBias())
 		model:add(LeakyReLU(0.2, true))
-		-- state size : (ndf) x 128 x 128
+		-- state size : (ndf) x 64 x 64
+		model:add(SConv(ndf, ndf, 4, 4, 2, 2, 1, 1):noBias())
+		model:add(SBatchNorm(ndf)):add(LeakyReLU(0.2, true))
+		-- state size : (ndf) x 32 x 32
 		model:add(SConv(ndf, 2*ndf, 4, 4, 2, 2, 1, 1):noBias())
 		model:add(SBatchNorm(2*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (ndf) x 64 x 64
-		model:add(SConv(2*ndf, 2*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(2*ndf)):add(LeakyReLU(0.2, true))
-		-- state size : (ndf) x 32 x 32
-		model:add(SConv(2*ndf, 4*ndf, 4, 4, 2, 2, 1, 1):noBias())
-		model:add(SBatchNorm(4*ndf)):add(LeakyReLU(0.2, true))
 		-- state size : (2*ndf) x 16 x 16
-		model:add(SConv(4*ndf, 4*ndf, 4, 4, 2, 2, 1, 1):noBias())
+		model:add(SConv(2*ndf, 4*ndf, 4, 4, 2, 2, 1, 1):noBias())
 		model:add(SBatchNorm(4*ndf)):add(LeakyReLU(0.2, true))
 		-- state size : (4*ndf) x 8 x 8
 		model:add(SConv(4*ndf, 8*ndf, 4, 4, 2, 2, 1, 1):noBias())
