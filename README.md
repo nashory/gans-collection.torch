@@ -1,5 +1,5 @@
 # gans-collection.torch
-Collection of GAN models implemented in Torch7 (e.g. DCGAN, ALI, Context-encoder).
+Torch implementation of various types of GANs (e.g. DCGAN, ALI, Context-encoder, DiscoGAN).
 
 ![image](https://camo.githubusercontent.com/45e147fc9dfcf6a8e5df2c9b985078258b9974e3/68747470733a2f2f63646e2d696d616765732d312e6d656469756d2e636f6d2f6d61782f313030302f312a33394e6e6e695f6e685044614c7539416e544c6f57772e706e67)
 
@@ -8,6 +8,7 @@ Collection of GAN models implemented in Torch7 (e.g. DCGAN, ALI, Context-encoder
 + [DCGAN](https://arxiv.org/abs/1511.06434)
 + [Context-encoder](http://www.cv-foundation.org/openaccess/content_cvpr_2016/html/Pathak_Context_Encoders_Feature_CVPR_2016_paper.html)
 + [ALI](https://arxiv.org/abs/1606.00704)
++ [DiscoGAN](https://arxiv.org/pdf/1703.05192.pdf)
 
 
 ## Prerequisites
@@ -23,6 +24,7 @@ python download.py --datasets <dataset>
 (e.g) python run.py --datasets celebA
 
 ---------------------------------------
+The training data folder should look like : 
 <train_data_root>
                 |--classA
                         |--image1A
@@ -56,6 +58,12 @@ you will see like this:
 
 ## Results
 will be updated soon.
+
+
+## Acknowledgement
+brought dataloader code from ([DCGAN](https://github.com/soumith/dcgan.torch))
+referenced the code from ([Context-encoder](https://github.com/pathak22/context-encoder))
+
 
 
 ## Author
