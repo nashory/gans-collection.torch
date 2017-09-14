@@ -42,7 +42,7 @@ python run.py --type <gan_type>
 (e.g) python run.py --type dcgan
 ~~~
 
-## How to see generated images in real-time?
+## Display GUI : How to see generated images in real-time?
 step by step instruction:
 ~~~
 1. set server-related options(ip, port, etc.) in "script.opts.lua"
@@ -61,8 +61,8 @@ will be updated soon.
 
 
 ## Acknowledgement
-brought dataloader code from ([DCGAN](https://github.com/soumith/dcgan.torch))
-referenced the code from ([Context-encoder](https://github.com/pathak22/context-encoder))
++ brought dataloader code from ([DCGAN](https://github.com/soumith/dcgan.torch))  
++ referenced the code from ([Context-encoder](https://github.com/pathak22/context-encoder))  
 
 
 
