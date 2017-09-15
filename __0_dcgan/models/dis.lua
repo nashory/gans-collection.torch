@@ -24,7 +24,7 @@ function Discrim.weights_init(m)
 end
 
 -- Encode input context to noise
-function Discrim.create_model(type, mode, opt)
+function Discrim.create_model(type, opt)
 	assert(	type==64 or type==128 or type == 256, 
 			'erorr. type argument must \'64\' or \'128\' or \'256\'.')
 

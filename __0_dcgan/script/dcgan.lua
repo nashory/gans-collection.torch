@@ -25,7 +25,12 @@ function DCGAN:__init(model, criterion, opt, optimstate)
     self.nz = opt.nz
     self.batchSize = opt.batchSize
     self.sampleSize = opt.sampleSize
-
+    
+    -- generate test_noise(fixed)
+    self.test_noise = torch.Tensor(self.batchSize, self.nz, 1, 1)
+    if self.noisetype == 'uniform' then self.test_noise:uniform(-1,1)
+    elseif self.noisetype == 'normal' then self.test_noise:normal(0,1) end
+    
     if opt.display then
         self.disp = require 'display'
         self.disp.configure({hostname=opt.display_server_ip, port=opt.display_server_port})
@@ -134,13 +139,14 @@ function DCGAN:train(epoch, loader)
 
                 -- save image as png (size 64x64, grid 8x8 fixed).
                 local im_png = torch.Tensor(3, self.sampleSize*8, self.sampleSize*8):zero()
+                local x_test = self.gen:forward(self.test_noise:cuda())
                 for i = 1, 8 do
                     for j =  1, 8 do
-                        im_png[{{},{self.sampleSize*(j-1)+1, self.sampleSize*(j)},{self.sampleSize*(i-1)+1, self.sampleSize*(i)}}]:copy(self.x_tilde[{{8*(i-1)+j},{},{},{}}]:clone():add(1):div(2))
+                        im_png[{{},{self.sampleSize*(j-1)+1, self.sampleSize*(j)},{self.sampleSize*(i-1)+1, self.sampleSize*(i)}}]:copy(x_test[{{8*(i-1)+j},{},{},{}}]:clone():add(1):div(2))
                     end
                 end
                 os.execute('mkdir -p __0_dcgan/repo/image')
-                image.save(string.format('__0_dcgan/repo/image/%d.jpg', totalIter), im_png)
+                image.save(string.format('__0_dcgan/repo/image/%d.jpg', totalIter/self.opt.display_iter), im_png)
             end
 
             -- logging

@@ -25,6 +25,7 @@ function DiscoGAN:__init(model, criterion, opt, optimstate)
     self.batchSize = opt.batchSize
     self.sampleSize = opt.sampleSize
 
+
     if opt.display then
         self.disp = require 'display'
         self.disp.configure({hostname=opt.display_server_ip, port=opt.display_server_port})
@@ -147,6 +148,11 @@ function DiscoGAN:train(epoch, loader)
     self.param_dis_domb, self.gradParam_dis_domb = self.dis_domb:getParameters()
 
 
+    -- data for test
+    self.test_doma = self.dataset:getBatchByClass(1)
+    self.test_domb = self.dataset:getBatchByClass(2)
+
+
     local totalIter = 0
     for e = 1, epoch do
         -- get max iteration for 1 epcoh.
@@ -191,17 +197,23 @@ function DiscoGAN:train(epoch, loader)
                 self.disp.image(self.x_domb_tilde:clone(), 
                                 {win=self.opt.display_id*6 + self.opt.gpuid, title=self.opt.server_name})
                 
-                --[[            -- uncomment this when save png.
+                -- uncomment this when save png.
                 -- save image as png (size 64x64, grid 8x8 fixed).
                 local im_png = torch.Tensor(3, self.sampleSize*8, self.sampleSize*8):zero()
+                local im_png2 = torch.Tensor(3, self.sampleSize*8, self.sampleSize*8):zero()
+                local im_domb = self.gen_domab:forward(self.test_doma:cuda())
+                local im_doma = self.gen_domba:forward(self.test_domb:cuda())
                 for i = 1, 8 do
                     for j =  1, 8 do
-                        im_png[{{},{self.sampleSize*(j-1)+1, self.sampleSize*(j)},{self.sampleSize*(i-1)+1, self.sampleSize*(i)}}]:copy(self.x_tilde[{{8*(i-1)+j},{},{},{}}]:clone():add(1):div(2))
+                        im_png[{{},{self.sampleSize*(j-1)+1, self.sampleSize*(j)},{self.sampleSize*(i-1)+1, self.sampleSize*(i)}}]:copy(im_doma[{{8*(i-1)+j},{},{},{}}]:clone():add(1):div(2))
+                        im_png2[{{},{self.sampleSize*(j-1)+1, self.sampleSize*(j)},{self.sampleSize*(i-1)+1, self.sampleSize*(i)}}]:copy(im_domb[{{8*(i-1)+j},{},{},{}}]:clone():add(1):div(2))
                     end
                 end
-                os.execute('mkdir -p __0_dcgan/repo/image')
-                image.save(string.format('__0_dcgan/repo/image/%d.jpg', totalIter), im_png)
-            ]]--
+                os.execute('mkdir -p __3_discogan/repo/image/doma')
+                os.execute('mkdir -p __3_discogan/repo/image/domb')
+                image.save(string.format('__3_discogan/repo/image/doma/%d.jpg', totalIter/self.opt.display_iter), im_png)
+                image.save(string.format('__3_discogan/repo/image/domb/%d.jpg', totalIter/self.opt.display_iter), im_png2)
+            
             
             end
 
