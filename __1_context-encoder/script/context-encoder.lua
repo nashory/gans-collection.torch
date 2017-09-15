@@ -29,7 +29,7 @@ function trainer:__init(model, criterion, opt, optimstate)
 
     if opt.display then
         self.disp = require 'display'
-        self.disp.configure({hostname=opt.display_server_ip, port=8000})
+        self.disp.configure({hostname=opt.display_server_ip, port=opt.display_server_port})
     end
 
     -- get models and criterion.
