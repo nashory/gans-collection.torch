@@ -17,8 +17,8 @@ function M.parse(arg)
 	cmd:option('-gpuid', 0, 'which gpu to use. -1 = use CPU')
 	cmd:option('-name', 'CelebA_context-encoder', 'experiments numbering.')
 	cmd:option('-snapshot_every', 1, 'will save models every N epoch.')
-	cmd:option('-loadSize', 80, 'resize the loaded image to load size maintatining aspect ratio.')
-	cmd:option('-sampleSize', 64, 'size of random crops')
+	cmd:option('-loadSize', 140, 'resize the loaded image to load size maintatining aspect ratio.')
+	cmd:option('-sampleSize', 128, 'size of random crops')
 	
 
 	---------------- General options ---------------

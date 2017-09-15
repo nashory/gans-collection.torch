@@ -175,7 +175,7 @@ function trainer:train(epoch, loader)
 
             -- save model at every sepficied epoch.
             local data = {dis = self.dis, gen = self.gen}
-            self.snapshot(string.format('__1_context-encoder/repo/$s', self.opt.name), self.opt.name, totalIter, data)
+            self:snapshot(string.format('__1_context-encoder/repo/%s', self.opt.name), self.opt.name, totalIter, data)
             
             
             
