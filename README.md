@@ -9,6 +9,7 @@ Torch implementation of various types of GANs (e.g. DCGAN, ALI, Context-encoder,
 + [Context-encoder](http://www.cv-foundation.org/openaccess/content_cvpr_2016/html/Pathak_Context_Encoders_Feature_CVPR_2016_paper.html)
 + [ALI](https://arxiv.org/abs/1606.00704)
 + [DiscoGAN](https://arxiv.org/pdf/1703.05192.pdf)
++ [CycleGAN](https://arxiv.org/abs/1703.10593)
 
 
 ## Prerequisites
