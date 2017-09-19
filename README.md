@@ -58,7 +58,8 @@ you will see like this:
 
 
 ## Results
-will be updated soon.
++ DCGAN   
+<img src="https://github.com/nashory/gif/blob/master/_gans/dcgan.gif" width="400" height="400">
 
 
 ## Acknowledgement
