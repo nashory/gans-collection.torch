@@ -58,8 +58,11 @@ you will see like this:
 
 
 ## Results
-+ DCGAN   
-<img src="https://github.com/nashory/gif/blob/master/_gans/dcgan.gif" width="400" height="400">
++ DCGAN  
+
+|In progress|Final|
+|---|---|
+|<img src="https://github.com/nashory/gif/blob/master/_gans/dcgan.gif" width="400" height="400">|<img src="https://puu.sh/xDkqw/634f93b72f.jpg" width="400" height="400">|
 
 
 ## Acknowledgement
