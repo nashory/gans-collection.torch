@@ -45,7 +45,7 @@ print ('DiscoGAN discriminator : ')
 print(discogan_dis_doma)
 
 --loss metrics
-local discogan_criterion = {nn.BCECriterion(), nn.MSECriterion()}
+local discogan_criterion = {nn.BCECriterion(), nn.AbsCriterion()}
 
 -- run trainer
 local optimstate = {}

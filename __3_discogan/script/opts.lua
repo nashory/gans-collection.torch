@@ -33,7 +33,7 @@ function M.parse(arg)
 	cmd:option('-display_id', 10, 'display window id.')
 	cmd:option('-display_iter', 5, '# of iterations after which display is updated.')
 	cmd:option('-display_server_ip', '10.64.81.227', 'host server ip address.')
-	cmd:option('-display_server_port', 8001, 'host server port.')
+	cmd:option('-display_server_port', 8000, 'host server port.')
 	cmd:option('-sever_name', 'dcgan-test', 'server name.')
 
 

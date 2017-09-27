@@ -36,7 +36,7 @@ function Generator.create_model(type, opt)
         -- encoder.
         -- state size : (3) x 128 x 128 
         local enc = nn.Sequential()
-        enc:add(SConv(3, nef, 4, 4, 2, 2, 1, 1))
+        enc:add(SConv(nc, nef, 4, 4, 2, 2, 1, 1))
         enc:add(nn.ReLU(true))
         -- state size : (nef) x 64 x 64
         enc:add(SConv(nef, nef, 4, 4, 2, 2, 1, 1))
@@ -82,7 +82,7 @@ function Generator.create_model(type, opt)
         -- encoder.
         -- state size : (3) x 64 x 64 
         local enc = nn.Sequential()
-        enc:add(SConv(3, nef, 4, 4, 2, 2, 1, 1))
+        enc:add(SConv(nc, nef, 4, 4, 2, 2, 1, 1))
         enc:add(nn.ReLU(true))
         -- state size : (nef) x 32 x 32
         enc:add(SConv(nef, 2*nef, 4, 4, 2, 2, 1, 1))

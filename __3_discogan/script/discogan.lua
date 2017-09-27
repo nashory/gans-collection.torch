@@ -81,7 +81,7 @@ DiscoGAN['fGx_domab'] = function(self)
     self.x_domb_const = self.gen_domab(self.x_doma_tilde:cuda())
     local errG_const = self.MSEcrit:forward(self.x_domb_const:cuda(), self.x_domb:cuda())
     d_gen_crit = self.MSEcrit:backward(self.x_domb_const:cuda(), self.x_domb:cuda())
-    d_gen_dummy = self.gen_domab:backward(self.x_doma_tilde:cuda(), d_gen_crit)
+    d_gen_dummy = self.gen_domab:backward(self.x_doma_tilde:cuda(), d_gen_crit:mul(-1))
 
     local errG = errG_adv + errG_const
     return errG
@@ -124,7 +124,7 @@ DiscoGAN['fGx_domba'] = function(self)
     self.x_doma_const = self.gen_domba(self.x_domb_tilde:cuda())
     local errG_const = self.MSEcrit:forward(self.x_doma_const:cuda(), self.x_doma:cuda())
     d_gen_crit = self.MSEcrit:backward(self.x_doma_const:cuda(), self.x_doma:cuda())
-    d_gen_dummy = self.gen_domba:backward(self.x_domb_tilde:cuda(), d_gen_crit)
+    d_gen_dummy = self.gen_domba:backward(self.x_domb_tilde:cuda(), d_gen_crit:mul(-1))
 
     local errG = errG_adv + errG_const
     return errG

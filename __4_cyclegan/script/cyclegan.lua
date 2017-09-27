@@ -114,27 +114,12 @@ CycleGAN['fGx'] = function(self)
     local errG_cycle_doma = self.ABScrit:forward(x_doma_cycle:cuda(), self.x_doma:cuda())
     local d_cycle_doma = self.ABScrit:backward(x_doma_cycle:cuda(), self.x_doma:cuda())
     local d_cycle_sum = torch.add(d_cycle_doma, d_cycle_domb)      -- eq (2) in section 3.2
-    local d_gen_domab = self.gen_domab:backward(self.x_doma_tilde:cuda(), d_cycle_sum)
-    local d_gen_dumba = self.gen_domba:backward(self.x_domb_tilde:cuda(), d_cycle_sum)
+    local d_gen_domab = self.gen_domab:backward(self.x_doma_tilde:cuda(), d_cycle_sum:mul(-1))
+    local d_gen_dumba = self.gen_domba:backward(self.x_domb_tilde:cuda(), d_cycle_sum:mul(-1))
     local errG_cycle = (errG_cycle_domb + errG_cycle_doma)/2.0          -- avg loss.
     
     
     return errG_adv, errG_cycle
-end
-
-
-CycleGAN['fGx_domba'] = function(self)
-
-    -- train with adversrial (L_adv)
-    self.label:fill(1)          -- fake labels are real for generator cost.
-    
-    -- train with reconstruction (L_const)
-    self.x_doma_const = self.gen_domba(self.x_domb_tilde:cuda())
-    local errG_const = self.ABScrit:forward(self.x_doma_const:cuda(), self.x_doma:cuda())
-    d_gen_crit = self.ABScrit:backward(self.x_doma_const:cuda(), self.x_doma:cuda())
-
-    local errG = errG_adv + errG_const
-    return errG
 end
 
 
@@ -199,7 +184,7 @@ function CycleGAN:train(epoch, loader)
                 self.disp.image(self.x_domb_tilde:clone(), 
                                 {win=self.opt.display_id*6 + self.opt.gpuid, title=self.opt.server_name})
                 
-                --[[            -- uncomment this when save png.
+                            -- uncomment this when save png.
                 -- save image as png (size 64x64, grid 8x8 fixed).
                 local im_png = torch.Tensor(3, self.sampleSize*8, self.sampleSize*8):zero()
                 for i = 1, 8 do
@@ -207,9 +192,9 @@ function CycleGAN:train(epoch, loader)
                         im_png[{{},{self.sampleSize*(j-1)+1, self.sampleSize*(j)},{self.sampleSize*(i-1)+1, self.sampleSize*(i)}}]:copy(self.x_tilde[{{8*(i-1)+j},{},{},{}}]:clone():add(1):div(2))
                     end
                 end
-                os.execute('mkdir -p __0_dcgan/repo/image')
-                image.save(string.format('__0_dcgan/repo/image/%d.jpg', totalIter), im_png)
-            ]]--
+                os.execute('mkdir -p __4_cyclegan/repo/image')
+                image.save(string.format('__4_cyclegan/repo/image/%d.jpg', totalIter), im_png)
+            
             
             end
 
