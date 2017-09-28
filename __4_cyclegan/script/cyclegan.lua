@@ -24,6 +24,7 @@ function CycleGAN:__init(model, criterion, opt, optimstate)
     self.nz = opt.nz
     self.batchSize = opt.batchSize
     self.sampleSize = opt.sampleSize
+    self.lambda = opt.lambda
 
     if opt.display then
         self.disp = require 'display'
@@ -113,9 +114,9 @@ CycleGAN['fGx'] = function(self)
     local d_cycle_domb = self.ABScrit:backward(x_domb_cycle:cuda(), self.x_domb:cuda())
     local errG_cycle_doma = self.ABScrit:forward(x_doma_cycle:cuda(), self.x_doma:cuda())
     local d_cycle_doma = self.ABScrit:backward(x_doma_cycle:cuda(), self.x_doma:cuda())
-    local d_cycle_sum = torch.add(d_cycle_doma, d_cycle_domb)      -- eq (2) in section 3.2
-    local d_gen_domab = self.gen_domab:backward(self.x_doma_tilde:cuda(), d_cycle_sum:mul(-1))
-    local d_gen_dumba = self.gen_domba:backward(self.x_domb_tilde:cuda(), d_cycle_sum:mul(-1))
+    local d_cycle_sum = torch.add(d_cycle_doma, d_cycle_domb):mul(self.lambda)      -- eq (2) in section 3.2
+    local d_gen_domab = self.gen_domab:backward(self.x_doma_tilde:cuda(), d_cycle_sum)
+    local d_gen_dumba = self.gen_domba:backward(self.x_domb_tilde:cuda(), d_cycle_sum)
     local errG_cycle = (errG_cycle_domb + errG_cycle_doma)/2.0          -- avg loss.
     
     
@@ -138,6 +139,10 @@ function CycleGAN:train(epoch, loader)
     self.param_dis_doma, self.gradParam_dis_doma = self.dis_doma:getParameters()
     self.param_gen_domab, self.gradParam_gen_domab = self.gen_domab:getParameters()
     self.param_dis_domb, self.gradParam_dis_domb = self.dis_domb:getParameters()
+
+    -- data for test
+    self.test_doma = self.dataset:getBatchByClass(1)
+    self.test_domb = self.dataset:getBatchByClass(2)
 
 
     local totalIter = 0
@@ -186,14 +191,21 @@ function CycleGAN:train(epoch, loader)
                 
                             -- uncomment this when save png.
                 -- save image as png (size 64x64, grid 8x8 fixed).
-                local im_png = torch.Tensor(3, self.sampleSize*8, self.sampleSize*8):zero()
+                local im_png1 = torch.Tensor(3, self.sampleSize*8, self.sampleSize*8):zero()
+                local im_png2 = torch.Tensor(3, self.sampleSize*8, self.sampleSize*8):zero()
+                local im_domb = self.gen_domab:forward(self.test_doma:cuda())
+                local im_doma = self.gen_domba:forward(self.test_domb:cuda())
+                
                 for i = 1, 8 do
                     for j =  1, 8 do
-                        im_png[{{},{self.sampleSize*(j-1)+1, self.sampleSize*(j)},{self.sampleSize*(i-1)+1, self.sampleSize*(i)}}]:copy(self.x_tilde[{{8*(i-1)+j},{},{},{}}]:clone():add(1):div(2))
+                        im_png1[{{},{self.sampleSize*(j-1)+1, self.sampleSize*(j)},{self.sampleSize*(i-1)+1, self.sampleSize*(i)}}]:copy(im_doma[{{8*(i-1)+j},{},{},{}}]:clone():add(1):div(2))
+                        im_png2[{{},{self.sampleSize*(j-1)+1, self.sampleSize*(j)},{self.sampleSize*(i-1)+1, self.sampleSize*(i)}}]:copy(im_domb[{{8*(i-1)+j},{},{},{}}]:clone():add(1):div(2))
                     end
                 end
-                os.execute('mkdir -p __4_cyclegan/repo/image')
-                image.save(string.format('__4_cyclegan/repo/image/%d.jpg', totalIter), im_png)
+                os.execute('mkdir -p __4_cyclegan/repo/image/doma')
+                os.execute('mkdir -p __4_cyclegan/repo/image/domb')
+                image.save(string.format('__4_cyclegan/repo/image/doma/%d.jpg', totalIter), im_png1)
+                image.save(string.format('__4_cyclegan/repo/image/domb/%d.jpg', totalIter), im_png2)
             
             
             end

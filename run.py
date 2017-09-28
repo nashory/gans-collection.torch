@@ -19,6 +19,7 @@ elif gan_type == 'context-encoder' : os.system('th __1_context-encoder/script/ma
 elif gan_type == 'ali' : os.system('th __2_ali/script/main.lua')
 elif gan_type == 'discogan' : os.system('th __3_discogan/script/main.lua')
 elif gan_type == 'cyclegan' : os.system('th __4_cyclegan/script/main.lua')
+elif gan_type == 'ebgan' : os.system('th __5_ebgan/script/main.lua')
 else:
     print('Error: wrong type arguments!')
     os.exit()
