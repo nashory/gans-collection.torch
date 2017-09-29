@@ -11,6 +11,7 @@ Torch implementation of various types of GANs (e.g. DCGAN, ALI, Context-encoder,
 + [DiscoGAN](https://arxiv.org/pdf/1703.05192.pdf)
 + [CycleGAN](https://arxiv.org/abs/1703.10593)
 + [Energy-Based GAN (EBGAN)](https://arxiv.org/pdf/1609.03126.pdf)
++ [LSGAN](https://arxiv.org/pdf/1611.04076.pdf)
 
 
 ## Prerequisites
@@ -37,7 +38,7 @@ The training data folder should look like :
 ---------------------------------------
 ~~~
 
-2. run GANs training:
+2. run GANs training:  
 __Note that you need to change parameter options in "script/opts.lua" for each GANs.__
 ~~~ 
 python run.py --type <gan_type>
