@@ -6,7 +6,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--type', default='dcgan', help='Select GAN type (dcgan/context-encoder/ali/discogan/cyclegan).')
+parser.add_argument('--type', default='dcgan', help='Select GAN type (dcgan/context-encoder/ali/discogan/cyclegan/ebgan/lsgan).')
 args = parser.parse_args()
 params = vars(args)
 print json.dumps(params, indent = 4)
@@ -20,6 +20,7 @@ elif gan_type == 'ali' : os.system('th __2_ali/script/main.lua')
 elif gan_type == 'discogan' : os.system('th __3_discogan/script/main.lua')
 elif gan_type == 'cyclegan' : os.system('th __4_cyclegan/script/main.lua')
 elif gan_type == 'ebgan' : os.system('th __5_ebgan/script/main.lua')
+elif gan_type == 'lsgan' : os.system('th __6_lsgan/script/main.lua')
 else:
     print('Error: wrong type arguments!')
     os.exit()
