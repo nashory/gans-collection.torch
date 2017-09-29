@@ -74,7 +74,7 @@ function Generator.create_model(type, opt)
 		dec:add(SBatchNorm(ngf)):add(nn.ReLU(true))
 		-- state size : (ngf) x 64 x 64
 		dec:add(SFullConv(ngf, nc, 4, 4, 2, 2, 1, 1))
-		dec:add(nn.Tanh())
+		--dec:add(nn.Sigmoid())
 		-- state size : (nc) x 128 x 128
         
         model:add(enc):add(dec)
@@ -114,7 +114,7 @@ function Generator.create_model(type, opt)
 		dec:add(SBatchNorm(ngf)):add(nn.ReLU(true))
 		-- state size : (ngf) x 32 x 32
 		dec:add(SFullConv(ngf, nc, 4, 4, 2, 2, 1, 1))
-		dec:add(nn.Tanh())
+		--dec:add(nn.Sigmoid())
 		-- state size : (nc) x 64 x 64
         
         model:add(enc):add(dec)

@@ -54,7 +54,7 @@ function Generator.create_model(type, opt)
 		model:add(SBatchNorm(ngf)):add(nn.ReLU(true))
 		-- state size : (ngf) x 128 x 128
 		model:add(SFullConv(ngf, nc, 4, 4, 2, 2, 1, 1))
-		model:add(nn.Tanh())
+		--model:add(nn.Sigmoid())
 		-- state size : (nc) x 256 x 256	
 
 	elseif type == 128 then
@@ -75,7 +75,7 @@ function Generator.create_model(type, opt)
 		model:add(SBatchNorm(ngf)):add(nn.ReLU(true))
 		-- state size : (ngf) x 64 x 64
 		model:add(SFullConv(ngf, nc, 4, 4, 2, 2, 1, 1))
-		model:add(nn.Tanh())
+		--model:add(nn.Sigmoid())
 		-- state size : (nc) x 128 x 128	
 	elseif type == 64 then
 		-- input is (nz) x 1 x 1
@@ -92,7 +92,7 @@ function Generator.create_model(type, opt)
 		model:add(SBatchNorm(ngf)):add(nn.ReLU(true))
 		-- state size : (ngf) x 32 x 32
 		model:add(SFullConv(ngf, nc, 4, 4, 2, 2, 1, 1))
-		model:add(nn.Tanh())
+		--model:add(nn.Sigmoid())
 		-- state size : (ngf) x 64 x 64
 	end
 

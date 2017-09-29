@@ -63,10 +63,9 @@ EBGAN['fDx'] = function(self, x)
     self.dis:forward(self.x:cuda())
     self.x_ae = self.dis.output:clone()
     self.errD_real = self.crit_adv:forward(self.x_ae:cuda(), self.x:cuda())
-    local real_loss = torch.CudaTensor(self.x:size()):fill(self.errD_real)
-    local d_errD_real = self.crit_adv:backward(self.x_ae:cuda(), real_loss):clone()
+    local d_errD_real = self.crit_adv:backward(self.x_ae:cuda(), self.x:cuda()):clone()
     local d_x_ae = self.dis:backward(self.x:cuda(), d_errD_real:cuda()):clone()
-
+    
     -- train with fake(x_tilde)
     self.z = self.noise:clone():cuda()
     self.gen:forward(self.z)
@@ -74,10 +73,17 @@ EBGAN['fDx'] = function(self, x)
     self.dis:forward(self.x_tilde)
     self.x_tilde_ae = self.dis.output:clone()
     self.errD_fake = self.crit_adv:forward(self.x_tilde_ae:cuda(), self.x_tilde:cuda())
-    local fake_loss = torch.CudaTensor(self.x:size()):fill(self.errD_fake):mul(-1):add(self.margin)
-    local d_errD_fake = self.crit_adv:backward(self.x_tilde_ae:cuda(), fake_loss)
-    local d_x_tilde_ae = self.dis:backward(self.x_tilde:cuda(), d_errD_fake:cuda())
 
+    --local d_x_ae = self.dis:backward(self.x:cuda(), d_errD_real:cuda()):clone()
+    if (self.margin - self.errD_fake > 0) then              -- if |m-L(G(z))| < 0, then ignore fake loss.
+        local d_errD_fake = self.crit_adv:backward(self.x_tilde_ae:cuda(), self.x_tilde:cuda()):clone()
+        local d_x_tilde_ae = self.dis:backward(self.x_tilde:cuda(), d_errD_fake:mul(-1):cuda())
+    else
+        local d_errD_fake = self.crit_adv:backward(self.x_tilde_ae:cuda(), self.x_tilde:cuda()):clone()
+        local d_x_tilde_ae = self.dis:backward(self.x_tilde:cuda(), d_errD_fake:mul(0):cuda())
+    end
+
+    
     -- return error.
     local errD = {real = self.errD_real, fake = self.errD_fake}
     return errD
@@ -88,13 +94,7 @@ EBGAN['fGx'] = function(self, x)
     self.gen:zeroGradParameters()
    
     local errG = self.crit_adv:forward(self.x_tilde_ae:cuda(), self.x_tilde:cuda())
-    local gen_loss
-    if (self.opt.pulling_away) then 
-        gen_loss = torch.CudaTensor(self.x:size()):fill(errG):add(pt*self.pt_weight)        
-    else 
-        gen_loss = torch.CudaTensor(self.x:size()):fill(errG)
-    end
-    local d_errG = self.crit_adv:backward(self.x_tilde_ae:cuda(), gen_loss):clone()
+    local d_errG = self.crit_adv:backward(self.x_tilde_ae:cuda(), self.x_tilde:cuda()):clone()
     local d_gen_dis = self.dis:updateGradInput(self.x_tilde:cuda(), d_errG:cuda())
     local d_gen_dummy = self.gen:backward(self.z:cuda(), d_gen_dis:cuda())
 
