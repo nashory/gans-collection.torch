@@ -27,7 +27,7 @@ function LSGAN:__init(model, criterion, opt, optimstate)
     self.sampleSize = opt.sampleSize
     
     -- generate test_noise(fixed)
-    self.test_noise = torch.Tensor(self.batchSize, self.nz, 1, 1)
+    self.test_noise = torch.Tensor(64, self.nz, 1, 1)
     if self.noisetype == 'uniform' then self.test_noise:uniform(-1,1)
     elseif self.noisetype == 'normal' then self.test_noise:normal(0,1) end
     

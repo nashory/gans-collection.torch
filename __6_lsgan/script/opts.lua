@@ -38,7 +38,7 @@ function M.parse(arg)
 
 
 	-------------- Training options---------------
-	cmd:option('-batchSize', 64, 'batch size for training')
+	cmd:option('-batchSize', 16, 'batch size for training')
 	cmd:option('-lr', 0.0002, 'learning rate')
 	cmd:option('-noisetype', 'uniform', 'uniform/normal distribution noise.')
 
