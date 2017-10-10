@@ -1,5 +1,6 @@
 # gans-collection.torch
 Torch implementation of various types of GANs (e.g. DCGAN, ALI, Context-encoder, DiscoGAN, CycleGAN, EBGAN).
+__Note that EBGAN and BEGAN implementation is still not stable yet. I am working on this.__
 
 ![image](https://camo.githubusercontent.com/45e147fc9dfcf6a8e5df2c9b985078258b9974e3/68747470733a2f2f63646e2d696d616765732d312e6d656469756d2e636f6d2f6d61782f313030302f312a33394e6e6e695f6e685044614c7539416e544c6f57772e706e67)
 
@@ -60,11 +61,15 @@ you will see like this:
 
 
 ## Results
-|In progress|Final|
+|training|Final|
 |---|---|
 |<img src="https://github.com/nashory/gif/blob/master/_gans/dcgan.gif" width="400" height="400">|<img src="https://puu.sh/xDkqw/634f93b72f.jpg" width="400" height="400">|
+|<img src="https://github.com/nashory/gif/blob/master/_gans/lsgan.gif" width="400" height="400">|<img src="https://puu.sh/xUmf4/066a6ae4fc.jpg" width="400" height="400">|
 |<img src="https://github.com/nashory/gif/blob/master/_gans/discogan_celeba.gif" width="400" height="400">|<img src="https://puu.sh/xE2eB/2a8a5e48a7.jpg" width="400" height="400">|
 |<img src="https://github.com/nashory/gif/blob/master/_gans/discogan_ferg.gif" width="400" height="400">|<img src="https://puu.sh/xE2dV/08a9b14d20.jpg" width="400" height="400">|
+|<img src="https://github.com/nashory/gif/blob/master/_gans/cyclegan_celeba.gif" width="400" height="400">|<img src="https://puu.sh/xUmdS/e2e57daada.jpg" width="400" height="400">|
+|<img src="https://github.com/nashory/gif/blob/master/_gans/cyclegan_ferg.gif" width="400" height="400">|<img src="https://puu.sh/xUmbb/c03b9151a0.jpg" width="400" height="400">|
+
 
 
 ## Acknowledgement
